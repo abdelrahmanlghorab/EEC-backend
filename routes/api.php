@@ -7,3 +7,4 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 Route::apiResource('products', App\Http\Controllers\Api\ProductApiController::class);
+Route::get('/products/search', [App\Http\Controllers\Api\ProductApiController::class, 'search']);

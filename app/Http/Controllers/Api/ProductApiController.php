@@ -13,14 +13,14 @@ class ProductApiController extends Controller
         $page = $request->input('page', 1);
         $limit = $request->input('limit', 30);
         $sort = $request->input('sort', 'asc');
-        $products = Product::orderBy('price', $sort)->paginate($limit, ['title as name', 'image', 'price']);
+        $products = Product::orderBy('price', $sort)->paginate($limit, ['id','title as name', 'image', 'price']);
         return $products;
         // return Product::select('title as name', 'image', 'price')->orderBy('price', 'asc')->get();
 
     }
     public function search(Request $request)
     {
-        $query = $request->input('query');
+        $query = $request->search;
         return Product::where('title', 'LIKE', "%{$query}%")
                       ->select('title as name', 'image', 'price')
                       ->orderBy('title')
@@ -44,7 +44,9 @@ class ProductApiController extends Controller
     }
     public function destroy($id)
     {
-        return Product::destroy($id);
+        $product = Product::find($id);
+        $product->delete();
+        return $product;
     }
 
 }
